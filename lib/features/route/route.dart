@@ -1,7 +1,7 @@
 import 'package:final_year/features/screens/application_created.dart';
 import 'package:final_year/features/screens/create_national_profile.dart';
 import 'package:final_year/features/screens/field_screen.dart';
-import 'package:final_year/features/screens/flow_steps.dart';
+import 'package:final_year/features/screens/workflow_steps_screen.dart';
 import 'package:final_year/features/screens/login.dart';
 import 'package:final_year/features/screens/national_profile.dart';
 import 'package:final_year/features/screens/profile.dart';
@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../screens/document_steps_screen.dart';
+import '../screens/field_view_screen.dart';
 import '../screens/home_screen.dart';
 
 class AppRoute {
@@ -24,7 +25,8 @@ class AppRoute {
   static const String nationalProfile = '/nationalProfile';
   static const String applicationCreated = '/applicationCreated';
   static const String flowSteps = '/flowsteps';
-  static const String field = '/field';
+  static const String fieldView = '/field';
+  static const String documentSetStepField = '/setStepField';
   static const String singleWorkflow = '/singleWorkflow';
   static const String home = '/';
   static const String viewDocumentDetails = '/documentDetails';
@@ -82,7 +84,13 @@ class AppRoute {
       transition: Transition.fadeIn,
     ),
     GetPage(
-      name: field,
+      name: fieldView,
+      page: () => const FieldViewScreen(),
+       curve: Curves.easeInOut,
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: documentSetStepField,
       page: () => const FieldScreen(),
       curve: Curves.easeInOut,
       transition: Transition.fadeIn,

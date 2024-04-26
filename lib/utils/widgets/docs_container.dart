@@ -48,22 +48,35 @@ Widget uploadDocContainer(
   );
 }
 
-Widget nationalDocContainer({required String text, VoidCallback? onTap}) {
+Widget nationalDocContainer(
+    {required String text,
+    String? description,
+    VoidCallback? onTap,
+    Widget? icon}) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
       margin: EdgeInsets.only(top: 10.h),
-      padding: EdgeInsets.only(left: 15.w, bottom: 15.h),
+      padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 15.h),
       height: 80.h,
       alignment: Alignment.bottomLeft,
       width: double.infinity,
       decoration: BoxDecoration(
           color: AppColors.containerBgColor,
           borderRadius: BorderRadius.circular(5.sp)),
-      child: Column(
+      child: Row(
         children: [
-          boldText(text: text, fontSize: 16.sp),
-          
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                boldText(text: text, fontSize: 16.sp),
+                if (description != null && description.isNotEmpty)
+                  Text(description)
+              ],
+            ),
+          ),
+          if (icon != null) icon
         ],
       ),
     ),

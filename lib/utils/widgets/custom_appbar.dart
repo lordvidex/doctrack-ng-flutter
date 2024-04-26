@@ -11,6 +11,7 @@ AppBar customAppBAr(
     Color textColor = AppColors.boldTextColor,
     double fontSize = 16,
     bool centerTitle = true,
+    TextOverflow? titleOverflow,
     bool hasBox = false}) {
   return AppBar(
     centerTitle: centerTitle,
@@ -28,7 +29,13 @@ AppBar customAppBAr(
                     border: Border.all(color: AppColors.mainColor, width: 2)),
               )
             : Container(),
-        boldText(text: text, fontSize: fontSize.sp, textColor: textColor),
+        Expanded(
+          child: boldText(
+              text: text,
+              overflow: titleOverflow,
+              fontSize: fontSize.sp,
+              textColor: textColor),
+        ),
       ],
     ),
     actions: [

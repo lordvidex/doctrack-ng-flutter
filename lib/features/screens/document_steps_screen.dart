@@ -27,6 +27,7 @@ class DocumentDetailsScreen extends StatelessWidget {
             appBar: customAppBAr(
                 text: 'Document - ${document.workflow.name}',
                 hasBox: true,
+                titleOverflow: TextOverflow.ellipsis,
                 textColor: AppColors.mainColor,
                 fontSize: 14.sp),
             backgroundColor: Colors.white,
@@ -83,6 +84,8 @@ class _TimelineDelivery extends StatelessWidget {
                 disabled: i > currentIndex,
                 title: docStep.step.title,
                 message: docStep.step.description,
+                isUserTurn: docStep.isUserTurn,
+                totalFields: docStep.step.fieldsCount,
               ),
               beforeLineStyle: LineStyle(
                 color: i <= currentIndex
@@ -105,12 +108,16 @@ class _RightChild extends StatelessWidget {
     Key? key,
     required this.title,
     required this.message,
+    this.isUserTurn = false,
     this.disabled = false,
+    this.totalFields = 0,
   }) : super(key: key);
 
   final String title;
   final String message;
   final bool disabled;
+  final bool isUserTurn;
+  final int totalFields;
 
   @override
   Widget build(BuildContext context) {
@@ -125,32 +132,58 @@ class _RightChild extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(
-                title,
-                style: TextStyle(
-                  color: disabled
-                      ? const Color(0xFFBABABA)
-                      : const Color(0xFF636564),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: disabled
+                        ? const Color(0xFFBABABA)
+                        : const Color(0xFF636564),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                message,
-                style: TextStyle(
-                  color: disabled
-                      ? const Color(0xFFD5D5D5)
-                      : const Color(0xFF636564),
-                  fontSize: 16,
+                const SizedBox(height: 6),
+                Text(
+                  message,
+                  style: TextStyle(
+                    color: disabled
+                        ? const Color(0xFFD5D5D5)
+                        : const Color(0xFF636564),
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
+          if (!disabled)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Chip(
+                    backgroundColor: AppColors.mainColor,
+                    labelStyle: const TextStyle(color: Colors.white),
+                    label: Text(
+                      isUserTurn ? 'Submit' : 'View Data',
+                      style: TextStyle(fontSize: 10),
+                    ),
+                    padding: const EdgeInsets.all(0)),
+                Chip(
+                    backgroundColor: AppColors.mainColor,
+                    labelStyle: const TextStyle(color: Colors.white),
+                    label: Text(
+                      'View History',
+                      style: TextStyle(fontSize: 10),
+                    ),
+                    padding: const EdgeInsets.all(0)),
+              ],
+            )
         ],
       ),
     );
@@ -200,10 +233,10 @@ class _Header extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Document ID',
-                    style: const TextStyle(
-                      color: const Color(0xFFA2A2A2),
+                    style: TextStyle(
+                      color: Color(0xFFA2A2A2),
                       fontSize: 16,
                     ),
                   ),

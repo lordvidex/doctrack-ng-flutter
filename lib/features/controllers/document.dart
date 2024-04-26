@@ -19,6 +19,20 @@ class DocumentController extends GetxController {
         .toList();
     update();
   }
+
+  Future<Document?> createDocument(workflowId) async {
+    Response response =
+        await apiClient.postData('/v1/document', {'workflowId': workflowId});
+    if (response.statusCode != 200) {
+      return null;
+    }
+    final id = response.body['id'];
+    response = await apiClient.getData('/v1/document/$id');
+    if (response.statusCode != 200) {
+      return null;
+    }
+    return Document.fromMap(response.body['document']);
+  }
 }
 
 class DocumentStepsController extends GetxController {
@@ -42,5 +56,10 @@ class DocumentStepsController extends GetxController {
         .map((e) => DocumentStep.fromMap(e))
         .toList()
       ..sort((a, b) => a.step.index - b.step.index);
+
+    documentSteps.forEach((element) {
+      element.events.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    });
+    update();
   }
 }

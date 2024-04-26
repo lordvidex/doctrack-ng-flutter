@@ -31,15 +31,4 @@ class FieldController extends GetxController{
     print('..value is ${values[index]}');
     print('.vales are $values');
   }
-
-  Future<void> getDocId(String workflowId) async {
-      final accessToken  = sharedPreferences.containsKey(StorageConstants.TOKEN)? sharedPreferences.getString(StorageConstants.TOKEN):'';
-     final response = await apiClient.postData(UrlConstants.DOCUMENT_ENDPOINT, {'workflowId': workflowId}, accessToken: accessToken);
-     if(response.statusCode==200){
-      print('....success ${response.body}');
-     }else{
-      print('..statuscode ${response.statusCode}');
-      print('..statustext ${response.statusText}');
-     }
-     }
 }

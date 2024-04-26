@@ -59,16 +59,9 @@ class ApiClient extends GetConnect implements GetxService {
     }
   }
 
-  Future<Response> postData(String url, dynamic body,
-      {String? accessToken}) async {
-    print('...the token is $accessToken');
-    final header = {
-      'Content-type': 'application/json',
-      'Authorization': 'Bearer $accessToken',
-      "HttpHeaders.contentTypeHeader": "application/json"
-    };
+  Future<Response> postData(String url, dynamic body) async {
     try {
-      Response response = await post(url, body, headers: header);
+      Response response = await post(url, body, headers: mainHeader);
       log(response.bodyString ?? 'empty body string');
       return response;
     } catch (e) {

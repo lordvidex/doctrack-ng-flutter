@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget inputField(
     {Widget? widget,
+    bool addInfoButton = false,
     TextInputType keyboardType = TextInputType.text,
     String? hintText,
     String? mainText,
@@ -28,11 +29,13 @@ Widget inputField(
               text: mainText ?? '',
               fontSize: 12.sp,
             ),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6),
-                child: Tooltip(
-                    message: hintText,
-                    child: const Icon(Icons.info, color: AppColors.mainColor))),
+            if (addInfoButton)
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Tooltip(
+                      message: hintText,
+                      child:
+                          const Icon(Icons.info, color: AppColors.mainColor))),
           ],
         ),
         SizedBox(

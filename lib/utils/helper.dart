@@ -18,6 +18,7 @@ Widget fieldType<T>(
   if (fieldType == FieldType.TYPE_LONG_TEXT.toString()) {
     return inputField(
         mainText: title,
+        addInfoButton: true,
         hintText: hintText,
         maxLines: 15,
         onChanged: onChanged,
@@ -25,6 +26,7 @@ Widget fieldType<T>(
   } else if (fieldType == FieldType.TYPE_SHORT_TEXT.toString()) {
     return inputField(
         mainText: title,
+        addInfoButton: true,
         hintText: hintText,
         maxLines: 1,
         onChanged: onChanged,
@@ -33,6 +35,7 @@ Widget fieldType<T>(
     return inputField(
         mainText: title,
         hintText: hintText,
+        addInfoButton: true,
         fieldWidth: 100.w,
         onChanged: onChanged,
         keyboardType: TextInputType.number,
@@ -43,6 +46,7 @@ Widget fieldType<T>(
     return inputField(
         mainText: title,
         hintText: hintText,
+        addInfoButton: true,
         maxLines: 2,
         onChanged: onChanged,
         controller: controller);
@@ -67,6 +71,7 @@ Widget fieldType<T>(
     return inputField(
         mainText: title,
         hintText: hintText,
+        addInfoButton: true,
         maxLines: 2,
         onChanged: onChanged,
         controller: controller);

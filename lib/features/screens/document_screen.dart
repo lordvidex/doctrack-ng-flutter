@@ -7,6 +7,7 @@ import 'package:final_year/utils/widgets/docs_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../controllers/document.dart';
 
@@ -44,12 +45,22 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
                           itemCount: controller.documents.length,
                           itemBuilder: (context, index) {
                             final doc = controller.documents[index];
+                            double p = doc.stepsCompleted.toDouble() /
+                                doc.workflow.steps.length;
                             return nationalDocContainer(
                               text: doc.workflow.name,
+                              description: doc.workflow.description,
+                              icon: CircularPercentIndicator(
+                                radius: 20.w,
+                                percent: p,
+                                center: new Text('${(p * 100).round()}%'),
+                                progressColor: AppColors.mainColor,
+                              ),
                               onTap: () {
-                                Get.toNamed(AppRoute.viewDocumentDetails, arguments: {
-                                  'document': doc,
-                                });
+                                Get.toNamed(AppRoute.viewDocumentDetails,
+                                    arguments: {
+                                      'document': doc,
+                                    });
                               },
                             );
                           }),
