@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:final_year/utils/constants/url.dart';
 import 'package:get/get.dart';
 
@@ -30,6 +32,7 @@ class ApiClient extends GetConnect implements GetxService {
     try {
       print('trying.....');
       Response response = await get(uri, headers: mainHeader);
+      log(response.bodyString ?? 'empty body string');
       return response;
     } catch (e) {
       print(e.toString());
@@ -47,6 +50,7 @@ class ApiClient extends GetConnect implements GetxService {
     };
     try {
       Response response = await post(url, body, headers: header);
+      log(response.bodyString ?? 'empty body string');
       return response;
     } catch (e) {
       return Response(statusCode: 1, statusText: e.toString());
