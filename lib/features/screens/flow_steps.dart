@@ -12,46 +12,50 @@ class WorkflowStepsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<WorkFlowSteps> steps = Get.arguments['steps'];
+    List<WorkflowStep> steps = Get.arguments['steps'];
     String name = Get.arguments['name'];
     String workflowId = Get.arguments['workflowId'];
-    
-    return GetBuilder<WorkflowController>(
-      builder: (controller) {
-        return Scaffold(
-          appBar: AppBar(title: boldText(text: '$name Steps'), centerTitle: true,),
-          body: Padding(padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
-           child: steps.isEmpty?Center(child: boldText(text: 'No step is available')): ListView.builder(
-            itemCount: steps.length,
-            itemBuilder: (context, index){
-              final step = steps[index];
-            return GestureDetector(
-              onTap: () => controller.getFlowField(step.id).then((value) => Get.toNamed(AppRoute.field,
-              parameters: {
-                'workflowId' : workflowId,
-                'stepId' : step.id,
-              }
-              )),
-              child: Container(
-                margin: EdgeInsets.only(bottom: 10.h),
-                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-                decoration: BoxDecoration(
-                  color: AppColors.greyColor.withOpacity(0.4)
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    boldText(text: step.title),
-                    SizedBox(height: 10.h,),
-                    Text(step.description)
-                  ],
-                ),
-              ),
-            );
-           })
-          ),
-        );
-      }
-    );
+
+    return GetBuilder<WorkflowController>(builder: (controller) {
+      return Scaffold(
+        appBar: AppBar(
+          title: boldText(text: '$name Steps'),
+          centerTitle: true,
+        ),
+        body: Padding(
+            padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
+            child: steps.isEmpty
+                ? Center(child: boldText(text: 'No step is available'))
+                : ListView.builder(
+                    itemCount: steps.length,
+                    itemBuilder: (context, index) {
+                      final step = steps[index];
+                      return GestureDetector(
+                        onTap: () => controller.getFlowField(step.id).then(
+                            (value) => Get.toNamed(AppRoute.field, parameters: {
+                                  'workflowId': workflowId,
+                                  'stepId': step.id,
+                                })),
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 10.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15.w, vertical: 10.h),
+                          decoration: BoxDecoration(
+                              color: AppColors.greyColor.withOpacity(0.4)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              boldText(text: step.title),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Text(step.description)
+                            ],
+                          ),
+                        ),
+                      );
+                    })),
+      );
+    });
   }
 }

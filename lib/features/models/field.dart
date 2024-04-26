@@ -1,13 +1,15 @@
-class Field {
-  List<FieldsList>? fieldslist;
+import 'dart:convert';
 
-  Field({this.fieldslist});
+class FieldModel {
+  List<WorkflowField>? fieldslist;
 
-  Field.fromJson(Map<String, dynamic> json) {
+  FieldModel({this.fieldslist});
+
+  FieldModel.fromJson(Map<String, dynamic> json) {
     if (json['fields'] != null) {
-      fieldslist = <FieldsList>[];
+      fieldslist = <WorkflowField>[];
       json['fields'].forEach((v) {
-        fieldslist!.add( FieldsList.fromJson(v));
+        fieldslist!.add(WorkflowField.fromMap(v));
       });
     }
   }
@@ -15,13 +17,13 @@ class Field {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (fieldslist != null) {
-      data['fields'] = fieldslist!.map((v) => v.toJson()).toList();
+      data['fields'] = fieldslist!.map((v) => v.toMap()).toList();
     }
     return data;
   }
 }
 
-class FieldsList {
+class WorkflowField {
   String? id;
   bool? isGlobal;
   String? orgId;
@@ -29,7 +31,7 @@ class FieldsList {
   String? description;
   String? type;
 
-  FieldsList(
+  WorkflowField(
       {this.id,
       this.isGlobal,
       this.orgId,
@@ -37,23 +39,30 @@ class FieldsList {
       this.description,
       this.type});
 
-  FieldsList.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    isGlobal = json['isGlobal'];
-    orgId = json['orgId'];
-    name = json['name'];
-    description = json['description'];
-    type = json['type'];
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'isGlobal': isGlobal,
+      'orgId': orgId,
+      'name': name,
+      'description': description,
+      'type': type,
+    };
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['isGlobal'] = this.isGlobal;
-    data['orgId'] = this.orgId;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['type'] = this.type;
-    return data;
+  factory WorkflowField.fromMap(Map<String, dynamic> map) {
+    return WorkflowField(
+      id: map['id'],
+      isGlobal: map['isGlobal'],
+      orgId: map['orgId'],
+      name: map['name'],
+      description: map['description'],
+      type: map['type'],
+    );
   }
+
+  String toJson() => json.encode(toMap());
+
+  factory WorkflowField.fromJson(String source) =>
+      WorkflowField.fromMap(json.decode(source));
 }

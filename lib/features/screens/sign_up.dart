@@ -15,12 +15,10 @@ import 'package:get/get.dart';
 
 class SignupScreen extends StatelessWidget {
   const SignupScreen({super.key});
- 
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AuthController>(builder: (authcontroller) {
-    
       return Scaffold(
         appBar: customAppBAr(
             text: 'National Profile', centerTitle: true, hasBox: true),
@@ -35,49 +33,68 @@ class SignupScreen extends StatelessWidget {
                     SizedBox(
                       height: 30.h,
                     ),
-                    inpuutField(
-                        hintText: 'Enter First Name',
-                        controller: authcontroller.firstNameController, onChanged: (p0) {
-                          authcontroller.checkIfSiunUpTextControllerIsNotEmpty();
-                        },
-                        ),
-                    inpuutField(
-                        hintText: 'Enter Last Name', controller:authcontroller. lastNameController,onChanged: (p0) {
-                          authcontroller.checkIfSiunUpTextControllerIsNotEmpty();
-                        },),
-                    inpuutField(hintText: 'Enter Email', controller:authcontroller. emailController,onChanged: (p0) {
-                          authcontroller.checkIfSiunUpTextControllerIsNotEmpty();
-                        },),
-                    inpuutField(
-                        hintText: 'Enter Password', controller:authcontroller. passwordController,onChanged: (p0) {
-                          authcontroller.checkIfSiunUpTextControllerIsNotEmpty();
-                        },),
+                    inputField(
+                      hintText: 'Enter First Name',
+                      controller: authcontroller.firstNameController,
+                      onChanged: (p0) {
+                        authcontroller.checkIfSiunUpTextControllerIsNotEmpty();
+                      },
+                    ),
+                    inputField(
+                      hintText: 'Enter Last Name',
+                      controller: authcontroller.lastNameController,
+                      onChanged: (p0) {
+                        authcontroller.checkIfSiunUpTextControllerIsNotEmpty();
+                      },
+                    ),
+                    inputField(
+                      hintText: 'Enter Email',
+                      controller: authcontroller.emailController,
+                      onChanged: (p0) {
+                        authcontroller.checkIfSiunUpTextControllerIsNotEmpty();
+                      },
+                    ),
+                    inputField(
+                      hintText: 'Enter Password',
+                      controller: authcontroller.passwordController,
+                      onChanged: (p0) {
+                        authcontroller.checkIfSiunUpTextControllerIsNotEmpty();
+                      },
+                    ),
                     customButton(
                         text: 'Sign up',
-                        buttonBgColor: authcontroller.textFieldAllFilled ==
-                                true
+                        buttonBgColor: authcontroller.textFieldAllFilled == true
                             ? AppColors.mainColor
                             : AppColors.mainColor.withOpacity(0.4),
                         onTap: () async {
                           Get.focusScope?.unfocus();
-                          if(authcontroller.textFieldAllFilled==true){
-                              SignUpModel signUpBody = SignUpModel(
-                              email:authcontroller. emailController.text,
-                              firstName:authcontroller. firstNameController.text,
-                              password:authcontroller. passwordController.text,
-                              lastName:authcontroller. lastNameController.text);
-                         await authcontroller.registerUser(signUpBody).then((ResponseModel response){
-                          if(response.isSuccess==true){
-                             Get.offAllNamed(AppRoute.login);
-                            successSnackbar(title: 'Success', message: response.message);
-                          }else{
-                            errorSnackbar(title: 'Error', message: response.message);
+                          if (authcontroller.textFieldAllFilled == true) {
+                            SignUpModel signUpBody = SignUpModel(
+                                email: authcontroller.emailController.text,
+                                firstName:
+                                    authcontroller.firstNameController.text,
+                                password:
+                                    authcontroller.passwordController.text,
+                                lastName:
+                                    authcontroller.lastNameController.text);
+                            await authcontroller
+                                .registerUser(signUpBody)
+                                .then((ResponseModel response) {
+                              if (response.isSuccess == true) {
+                                Get.offAllNamed(AppRoute.login);
+                                successSnackbar(
+                                    title: 'Success',
+                                    message: response.message);
+                              } else {
+                                errorSnackbar(
+                                    title: 'Error', message: response.message);
+                              }
+                            });
+                          } else {
+                            errorSnackbar(
+                                title: 'Error',
+                                message: 'Please fill the field');
                           }
-                         });
-                          }else{
-                            errorSnackbar(title: 'Error', message: 'Please fill the field');
-                          }
-                         
                         }),
                     SizedBox(
                       height: 30.h,
@@ -93,9 +110,9 @@ class SignupScreen extends StatelessWidget {
                           width: 5.w,
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             authcontroller.clearTextFieldController();
-                           Get.toNamed(AppRoute.login);
+                            Get.toNamed(AppRoute.login);
                           },
                           child: boldText(
                               text: 'Login',
@@ -108,11 +125,11 @@ class SignupScreen extends StatelessWidget {
                 ),
               ),
               authcontroller.isLoading == true
-                ? Positioned(
-                    top: (MediaQuery.sizeOf(context).height / 2) - 100.h,
-                    left: (MediaQuery.sizeOf(context).width / 2) - 15.w,
-                    child: progressIndicator())
-                : Container(),
+                  ? Positioned(
+                      top: (MediaQuery.sizeOf(context).height / 2) - 100.h,
+                      left: (MediaQuery.sizeOf(context).width / 2) - 15.w,
+                      child: progressIndicator())
+                  : Container(),
             ],
           ),
         ),

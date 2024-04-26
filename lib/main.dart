@@ -19,26 +19,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    bool loggedIn =  WorkflowController.instance.isLoggedIn();
     return ScreenUtilInit(
-      
-      designSize:const Size(360, 690),
-      minTextAdapt: true,
-      builder: (context, _) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            appBarTheme:const AppBarTheme(backgroundColor: Colors.white),
-            scaffoldBackgroundColor: Colors.white,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          initialRoute: loggedIn?AppRoute.nationalProfile: AppRoute.initial,
-          getPages: AppRoute.pages,
-        );
-      }
-    );
+        designSize: const Size(360, 690),
+        minTextAdapt: true,
+        builder: (context, _) {
+          return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'DocTrackNG Prototype',
+            theme: ThemeData(
+              appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
+              scaffoldBackgroundColor: Colors.white,
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            initialRoute: AppRoute.login,
+            getPages: AppRoute.pages,
+          );
+        });
   }
 }
-

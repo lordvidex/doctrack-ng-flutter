@@ -11,8 +11,11 @@ import 'package:final_year/features/screens/upload_document.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../screens/document_steps_screen.dart';
+import '../screens/home_screen.dart';
+
 class AppRoute {
-  static const String initial = '/';
+  static const String initial = '/signup';
   static const String login = '/login';
   static const String createNationalProfile = '/createNationalProfile';
   static const String createProfile = '/createProfile';
@@ -22,17 +25,20 @@ class AppRoute {
   static const String applicationCreated = '/applicationCreated';
   static const String flowSteps = '/flowsteps';
   static const String field = '/field';
+  static const String singleWorkflow = '/singleWorkflow';
+  static const String home = '/';
+  static const String viewDocumentDetails = '/documentDetails';
 
   static List<GetPage> pages = [
     GetPage(
-        name: initial,
-        page: () =>  const SignupScreen(),
-        // middlewares: [
-        //   WelcomeMiddleWare(priority: 1)
-        // ],
-        curve: Curves.easeInOut,
-        transition: Transition.fadeIn,
-        ),
+      name: initial,
+      page: () => const SignupScreen(),
+      // middlewares: [
+      //   WelcomeMiddleWare(priority: 1)
+      // ],
+      curve: Curves.easeInOut,
+      transition: Transition.fadeIn,
+    ),
     GetPage(
       name: login,
       page: () => const LoginScreen(),
@@ -64,18 +70,12 @@ class AppRoute {
       transition: Transition.fadeIn,
     ),
     GetPage(
-      name: nationalProfile,
-      page: () => const NationalProfileScreen(),
-      curve: Curves.easeInOut,
-      transition: Transition.fadeIn,
-    ),
-    GetPage(
       name: applicationCreated,
       page: () => const ApplicationCreatedScreen(),
       curve: Curves.easeInOut,
       transition: Transition.fadeIn,
     ),
-     GetPage(
+    GetPage(
       name: flowSteps,
       page: () => const WorkflowStepsScreen(),
       curve: Curves.easeInOut,
@@ -87,5 +87,15 @@ class AppRoute {
       curve: Curves.easeInOut,
       transition: Transition.fadeIn,
     ),
+    GetPage(
+        name: home,
+        page: () => HomeScreen(),
+        curve: Curves.easeInOut,
+        transition: Transition.fadeIn),
+    GetPage(
+        name: viewDocumentDetails,
+        page: () => const DocumentDetailsScreen(),
+        curve: Curves.easeIn,
+        transition: Transition.fadeIn),
   ];
 }

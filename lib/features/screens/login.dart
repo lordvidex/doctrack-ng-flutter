@@ -18,75 +18,102 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AuthController>(
-      builder: (authcontroller) {
-        return Scaffold(
-          
-          appBar: customAppBAr(text: 'National Profile', centerTitle: true, hasBox: true),
-          body: SingleChildScrollView(
-            child: Stack(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 30.h),
-                  child: Column(
-                    children: [
-                      boldText(text: 'Sign in to portal'),
-                      SizedBox(height: 30.h,),
-                      inpuutField(hintText: 'E-mail', controller: authcontroller.emailController, onChanged: (p0) {
+    return GetBuilder<AuthController>(builder: (authcontroller) {
+      return Scaffold(
+        appBar: customAppBAr(
+            text: 'National Profile', centerTitle: true, hasBox: true),
+        body: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 30.h),
+                child: Column(
+                  children: [
+                    boldText(text: 'Sign in to portal'),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    inputField(
+                      hintText: 'E-mail',
+                      controller: authcontroller.emailController,
+                      onChanged: (p0) {
                         authcontroller.checkIfLoginTextControllerIsNotEmpty();
-                      },),
-                      inpuutField(hintText: 'Enter Password', controller: authcontroller.passwordController, onChanged: (p0) {
+                      },
+                    ),
+                    inputField(
+                      hintText: 'Enter Password',
+                      controller: authcontroller.passwordController,
+                      onChanged: (p0) {
                         authcontroller.checkIfLoginTextControllerIsNotEmpty();
-                      },),
-                      customButton(text: 'Sign in',buttonBgColor: authcontroller.textFieldAllFilled ==
-                                true
-                            ? AppColors.mainColor:AppColors.mainColor.withOpacity(0.4), onTap: () async {
-                              Get.focusScope?.unfocus();
-                         if(authcontroller.textFieldAllFilled==true){
-                           LoginModel loginBody = LoginModel(email: authcontroller.emailController.text, password: authcontroller.passwordController.text);
-                         await authcontroller.loginUser(loginBody).then((ResponseModel response){
-                          if(response.isSuccess==true){
-                            Get.offAllNamed(AppRoute.nationalProfile);
-                           
-                            successSnackbar(title: 'Success', message: response.message);
+                      },
+                    ),
+                    customButton(
+                      text: 'Sign in',
+                      buttonBgColor: authcontroller.textFieldAllFilled == true
+                          ? AppColors.mainColor
+                          : AppColors.mainColor.withOpacity(0.4),
+                      onTap: () async {
+                        Get.focusScope?.unfocus();
+                        if (authcontroller.textFieldAllFilled == true) {
+                          LoginModel loginBody = LoginModel(
+                              email: authcontroller.emailController.text,
+                              password: authcontroller.passwordController.text);
+                          await authcontroller
+                              .loginUser(loginBody)
+                              .then((ResponseModel response) {
+                            if (response.isSuccess == true) {
+                              Get.offAllNamed(AppRoute.nationalProfile);
 
-                          }else{
-                            errorSnackbar(title: 'Error', message: response.message);
-                          }
-                         });
-                         }else{
-                          errorSnackbar(title: 'Error', message: 'Please fill the field');
-                         }
-                       
-                      }, ),
-                      SizedBox(height: 30.h,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          boldText(text: 'Don\'t have an account?', textColor: AppColors.hintTextColor, fontSize: 14.sp),
-                          SizedBox(width: 5.w,),
-                          GestureDetector(
+                              successSnackbar(
+                                  title: 'Success', message: response.message);
+                            } else {
+                              errorSnackbar(
+                                  title: 'Error', message: response.message);
+                            }
+                          });
+                        } else {
+                          errorSnackbar(
+                              title: 'Error', message: 'Please fill the field');
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        boldText(
+                            text: 'Don\'t have an account?',
+                            textColor: AppColors.hintTextColor,
+                            fontSize: 14.sp),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        GestureDetector(
                             onTap: () {
                               authcontroller.clearTextFieldController();
-                              Get.back();
+                              Get.offAllNamed(AppRoute.home);
                             },
-                            child: boldText(text: 'Sign up', textColor: AppColors.mainColor, fontSize: 14.sp))
-                        ],
-                      )
-                    ],
-                  ),
+                            child: boldText(
+                                text: 'Sign up',
+                                textColor: AppColors.mainColor,
+                                fontSize: 14.sp))
+                      ],
+                    )
+                  ],
                 ),
-                authcontroller.isLoading == true
-                    ? Positioned(
-                        top: (MediaQuery.sizeOf(context).height / 2) - 100.h,
-                        left: (MediaQuery.sizeOf(context).width / 2) - 15.w,
-                        child: progressIndicator())
-                    : Container(),
-              ],
-            ),
+              ),
+              authcontroller.isLoading == true
+                  ? Positioned(
+                      top: (MediaQuery.sizeOf(context).height / 2) - 100.h,
+                      left: (MediaQuery.sizeOf(context).width / 2) - 15.w,
+                      child: progressIndicator())
+                  : Container(),
+            ],
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 }

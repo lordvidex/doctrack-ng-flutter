@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart' as d;
 import 'package:final_year/utils/constants/url.dart';
 import 'package:get/get.dart';
 
@@ -9,30 +10,48 @@ class ApiClient extends GetConnect implements GetxService {
   late String appbaseUrl;
   late String token;
   late User currentUser;
+  late d.Dio dio;
   late Map<String, String> mainHeader;
-  ApiClient({required this.appbaseUrl}) {
+  ApiClient({required this.appbaseUrl, required this.dio}) {
     baseUrl = appbaseUrl;
     timeout = const Duration(seconds: 60);
     token = UrlConstants.TOKEN;
     mainHeader = {
       'Content-type': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'bearer ${token.trim()}'.trim(),
+      "HttpHeaders.contentTypeHeader": "application/json",
     };
   }
 
   updateToken(token) {
+    token = token.trim();
     mainHeader = {
-      'Content-type': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+      'Authorization': 'bearer $token',
+      "HttpHeaders.contentTypeHeader": "application/json",
     };
   }
 
   Future<Response> getData(String uri,
-      {Map<String, String>? mainHeader}) async {
+      {Map<String, String>? additionalHeaders}) async {
+    final headers = additionalHeaders ?? {};
+    mainHeader.forEach((key, value) {
+      headers[key] = value;
+    });
+    print(headers);
+
     try {
-      print('trying.....');
-      Response response = await get(uri, headers: mainHeader);
-      log(response.bodyString ?? 'empty body string');
+      // print('trying normal.....');
+      // final oldResponse =
+      //     await dio.get(uri, options: d.Options(headers: headers));
+      // print(oldResponse.data);
+      // print(oldResponse.headers);
+      // print(oldResponse.body);
+
+      Response response = await get(uri, headers: headers);
+      print(response.body);
+      print(response.statusCode);
+      print(response.headers);
       return response;
     } catch (e) {
       print(e.toString());

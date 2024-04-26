@@ -32,20 +32,20 @@ class CreateNationalProfileScreen extends GetView<ProfileController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       boldText(text: 'Create National Profile'),
-                      inpuutField(hintText: 'First Name'),
+                      inputField(hintText: 'First Name'),
                       Row(
                         children: [
-                          Expanded(child: inpuutField(hintText: 'Last Name')),
+                          Expanded(child: inputField(hintText: 'Last Name')),
                           SizedBox(
                             width: 10.w,
                           ),
-                          Expanded(child: inpuutField(hintText: 'Middle Name'))
+                          Expanded(child: inputField(hintText: 'Middle Name'))
                         ],
                       ),
-                      inpuutField(hintText: 'National Identification Number'),
-                      inpuutField(hintText: 'Email'),
-                      inpuutField(hintText: 'Password'),
-                      inpuutField(hintText: 'Re-enter Password'),
+                      inputField(hintText: 'National Identification Number'),
+                      inputField(hintText: 'Email'),
+                      inputField(hintText: 'Password'),
+                      inputField(hintText: 'Re-enter Password'),
                       customButton(
                           text: 'Continue',
                           onTap: () => controller.createNationalProfile())

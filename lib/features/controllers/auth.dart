@@ -46,25 +46,13 @@ class AuthController extends GetxController {
     Response response = await authRepo.login(loginBody);
     if (response.statusCode == 200) {
       String accessToken = response.body['token'];
-      Response verifyTokenResponse = await authRepo.verifyToken(accessToken);
-
-      if (verifyTokenResponse.statusCode == 200) {
-        //save user token
-
-        authRepo.saveUserToken(response.body['token'],
-            User.fromMap(response.body['user'] as Map<String, dynamic>));
-        responseModel =
-            ResponseModel(isSuccess: true, message: 'Login Success');
-        isLoading = false;
-        update();
-        clearTextFieldController();
-      } else {
-        isLoading = false;
-        update();
-        clearTextFieldController();
-        responseModel =
-            ResponseModel(isSuccess: false, message: 'Verifying token Failed');
-      }
+      //save user token
+      await authRepo.saveUserToken(
+          response.body['token'], User.fromMap(response.body['user']));
+      responseModel = ResponseModel(isSuccess: true, message: 'Login Success');
+      isLoading = false;
+      update();
+      clearTextFieldController();
 
       return responseModel;
     } else {
@@ -95,10 +83,6 @@ class AuthController extends GetxController {
 
   logOut() {
     authRepo.logOut();
-  }
-
-  bool get isLoggedIn {
-    return authRepo.isLoogedIn();
   }
 
   clearTextFieldController() {

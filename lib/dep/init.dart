@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:final_year/features/api/apiClient.dart';
 import 'package:final_year/features/controllers/auth.dart';
+import 'package:final_year/features/controllers/document.dart';
 import 'package:final_year/features/controllers/field.dart';
 import 'package:final_year/features/controllers/profile.dart';
 import 'package:final_year/features/controllers/upload_docs.dart';
@@ -18,12 +20,27 @@ Future<void> initDep() async {
   OneSignal.initialize(appID);
   OneSignal.Notifications.requestPermission(true);
   final sharedPreferences = await SharedPreferences.getInstance();
+  Get.lazyPut(() => Dio(BaseOptions(
+      baseUrl: UrlConstants.BASEURL,
+      headers: {'Content-Type': 'application/json'})));
   Get.lazyPut(() => sharedPreferences);
-  Get.lazyPut(() => ApiClient(appbaseUrl: UrlConstants.BASEURL));
+  Get.lazyPut(
+      () => ApiClient(appbaseUrl: UrlConstants.BASEURL, dio: Get.find()));
   Get.lazyPut(() => AuthController(authRepo: Get.find()));
-  Get.lazyPut(() => AuthRepo(apiClient: Get.find(), sharedPreferences: sharedPreferences));
+  Get.lazyPut(() =>
+      AuthRepo(apiClient: Get.find(), sharedPreferences: sharedPreferences));
   Get.lazyPut(() => ProfileController(), fenix: true);
-  Get.lazyPut(() => UploadDocumentsController(apiClient: Get.find(), sharedPreferences: sharedPreferences), fenix: true);
-  Get.lazyPut(() => WorkflowController(apiClient: Get.find(), sharedPreferences: sharedPreferences));
-  Get.lazyPut(() => FieldController(workflowController: Get.find(), apiClient: Get.find(), sharedPreferences: sharedPreferences), fenix: true);
+  Get.lazyPut(
+      () => UploadDocumentsController(
+          apiClient: Get.find(), sharedPreferences: sharedPreferences),
+      fenix: true);
+  Get.lazyPut(() => WorkflowController(
+      apiClient: Get.find(), sharedPreferences: sharedPreferences));
+  Get.lazyPut(() => DocumentController(apiClient: Get.find()), fenix: true);
+  Get.lazyPut(
+      () => FieldController(
+          workflowController: Get.find(),
+          apiClient: Get.find(),
+          sharedPreferences: sharedPreferences),
+      fenix: true);
 }

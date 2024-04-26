@@ -28,23 +28,23 @@ class ProfileScreen extends GetView<ProfileController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      inpuutField(hintText: 'Date of Birth'),
-                      inpuutField(hintText: 'Place of Birth'),
-                      inpuutField(hintText: 'Date of Birth'),
-                      inpuutField(hintText: 'Height'),
-                      inpuutField(hintText: 'Weight'),
-                      inpuutField(hintText: 'Eye Color'),
-                      inpuutField(hintText: 'Address'),
+                      inputField(hintText: 'Date of Birth'),
+                      inputField(hintText: 'Place of Birth'),
+                      inputField(hintText: 'Date of Birth'),
+                      inputField(hintText: 'Height'),
+                      inputField(hintText: 'Weight'),
+                      inputField(hintText: 'Eye Color'),
+                      inputField(hintText: 'Address'),
                       Row(
                         children: [
-                          Expanded(child: inpuutField(hintText: 'City')),
+                          Expanded(child: inputField(hintText: 'City')),
                           SizedBox(
                             width: 10.w,
                           ),
-                          Expanded(child: inpuutField(hintText: 'State'))
+                          Expanded(child: inputField(hintText: 'State'))
                         ],
                       ),
-                      inpuutField(hintText: 'Zip Code'),
+                      inputField(hintText: 'Zip Code'),
                       customButton(
                           text: 'Create Profile',
                           onTap: () => controller.createProfile())

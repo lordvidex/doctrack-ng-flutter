@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-Widget uploadDocContainer({required String mainText, required VoidCallback onTap}) {
+Widget uploadDocContainer(
+    {required String mainText, required VoidCallback onTap}) {
   return Padding(
     padding: EdgeInsets.only(top: 10.h),
     child: Column(
@@ -47,19 +48,24 @@ Widget uploadDocContainer({required String mainText, required VoidCallback onTap
   );
 }
 
-Widget nationalDocContainer({required String text,  VoidCallback? onTap}) {
+Widget nationalDocContainer({required String text, VoidCallback? onTap}) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
       margin: EdgeInsets.only(top: 10.h),
       padding: EdgeInsets.only(left: 15.w, bottom: 15.h),
-      height: 130.h,
+      height: 80.h,
       alignment: Alignment.bottomLeft,
       width: double.infinity,
       decoration: BoxDecoration(
           color: AppColors.containerBgColor,
           borderRadius: BorderRadius.circular(5.sp)),
-      child: boldText(text: text, fontSize: 16.sp),
+      child: Column(
+        children: [
+          boldText(text: text, fontSize: 16.sp),
+          
+        ],
+      ),
     ),
   );
 }
@@ -81,11 +87,7 @@ Widget applicationCreatedContainer(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         boldText(text: mainText, fontSize: 16.sp),
-        boldText(
-            text:
-                subText,
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w400)
+        boldText(text: subText, fontSize: 12.sp, fontWeight: FontWeight.w400)
       ],
     ),
   );

@@ -16,49 +16,48 @@ class FieldScreen extends StatelessWidget {
     final workflowId = Get.parameters['workflowId'];
     print('...the workflowId is $workflowId');
     return GetBuilder<WorkflowController>(builder: (workflowCOntroller) {
-      return GetBuilder<FieldController>(
-        builder: (controller) {
-          return Scaffold(
-              appBar: customAppBAr(text: 'Fill the fields'),
-              body: SingleChildScrollView(
-                child: workflowCOntroller.fields.isEmpty
-                    ? Center(child: boldText(text: 'No field is required'))
-                    : Column(
-                        children: [
-                          Padding(
-                            padding:
-                                EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
-                            child: Column(
-                              children: [
-                                ListView.builder(
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: workflowCOntroller.fields.length,
-                                    itemBuilder: (context, index) {
-                                      final field = workflowCOntroller.fields[index];
-                                      return fieldType(
-                                        fieldType: field.type!,
-                                        title: field.name!,
-                                        hintText: field.description!,
-                                        controller: controller.controllers[index],
-                                        onChanged: (value) => controller
-                                            .updateInputValue(value, index),
-                                      );
-                                    }),
-                                SizedBox(
-                                  height: 50.h,
-                                ),
-                                customButton(text: 'Submit', onTap: () {
+      return GetBuilder<FieldController>(builder: (controller) {
+        return Scaffold(
+            appBar: customAppBAr(text: 'Fill the fields'),
+            body: workflowCOntroller.fields.isEmpty
+                ? Center(child: boldText(text: 'No field is required'))
+                : Column(
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.only(left: 20.w, right: 20.w, top: 10.h),
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: workflowCOntroller.fields.length,
+                                itemBuilder: (context, index) {
+                                  final field =
+                                      workflowCOntroller.fields[index];
+                                  return fieldType(
+                                    fieldType: field.type!,
+                                    title: field.name!,
+                                    hintText: field.description!,
+                                    controller: controller.controllers[index],
+                                    onChanged: (value) => controller
+                                        .updateInputValue(value, index),
+                                  );
+                                }),
+                            SizedBox(
+                              height: 50.h,
+                            ),
+                            customButton(
+                                text: 'Submit',
+                                onTap: () {
                                   controller.getDocId(workflowId!);
                                 })
-                              ],
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-              ));
-        }
-      );
+                    ],
+                  ));
+      });
     });
   }
 }

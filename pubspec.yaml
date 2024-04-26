@@ -41,6 +41,9 @@ dependencies:
   shared_preferences: ^2.2.2
   file_picker: ^8.0.0+1
   onesignal_flutter: ^5.1.2
+  http: ^1.2.1
+  dio: ^5.4.3+1
+  timeline_tile: ^2.0.0
 
 dev_dependencies:
   flutter_test:
