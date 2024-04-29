@@ -1,9 +1,7 @@
-import 'package:final_year/features/controllers/workflow.dart';
-import 'package:final_year/features/route/route.dart';
+import 'package:final_year/features/screens/step_field_screen.dart';
+import 'package:final_year/features/screens/step_events_screen.dart';
 import 'package:final_year/utils/constants/colors.dart';
 import 'package:final_year/utils/widgets/custom_appbar.dart';
-import 'package:final_year/utils/widgets/custom_search.dart';
-import 'package:final_year/utils/widgets/docs_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -19,30 +17,30 @@ class DocumentDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Document document = Get.arguments['document'];
     final currentIndex = document.stepsCompleted;
-    return GetBuilder<DocumentStepsController>(
-        init: DocumentStepsController(apiClient: Get.find())
-          ..getDocumentSteps(document.id),
-        builder: (controller) {
-          return Scaffold(
-            appBar: customAppBAr(
-                text: 'Document - ${document.workflow.name}',
-                hasBox: true,
-                titleOverflow: TextOverflow.ellipsis,
-                textColor: AppColors.mainColor,
-                fontSize: 14.sp),
-            backgroundColor: Colors.white,
-            body: controller.loading
-                ? const Center(child: CircularProgressIndicator())
-                : Column(
-                    children: <Widget>[
-                      _Header(),
-                      Expanded(
-                          child: _TimelineDelivery(
-                              controller.documentSteps, currentIndex)),
-                    ],
-                  ),
-          );
-        });
+    Get.put(DocumentStepsController(apiClient: Get.find())
+      ..getDocumentSteps(document.id));
+
+    return GetBuilder<DocumentStepsController>(builder: (controller) {
+      return Scaffold(
+        appBar: customAppBAr(
+            text: 'Document - ${document.workflow.name}',
+            hasBox: true,
+            titleOverflow: TextOverflow.ellipsis,
+            textColor: AppColors.mainColor,
+            fontSize: 14.sp),
+        backgroundColor: Colors.white,
+        body: controller.loading
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
+                children: <Widget>[
+                  _Header(doc: document),
+                  Expanded(
+                      child: _TimelineDelivery(
+                          controller.documentSteps, currentIndex)),
+                ],
+              ),
+      );
+    });
   }
 }
 
@@ -58,6 +56,9 @@ class _TimelineDelivery extends StatelessWidget {
           itemCount: steps.length,
           itemBuilder: (ctx, i) {
             final docStep = steps[i];
+            Get.put(
+                DocumentStepController(apiClient: Get.find(), step: docStep),
+                tag: docStep.id);
             return TimelineTile(
               alignment: TimelineAlign.manual,
               lineXY: 0.1,
@@ -74,28 +75,35 @@ class _TimelineDelivery extends StatelessWidget {
                             : Icons.horizontal_rule,
                     color: Colors.white),
                 color: i < currentIndex
-                    ? Color(0xFF27AA69)
+                    ? const Color(0xFF27AA69)
                     : currentIndex == i
-                        ? Color(0xFF2B619C)
-                        : Color(0xFFDADADA),
+                        ? const Color(0xFF2B619C)
+                        : const Color(0xFFDADADA),
                 padding: const EdgeInsets.all(6),
               ),
-              endChild: _RightChild(
-                disabled: i > currentIndex,
-                title: docStep.step.title,
-                message: docStep.step.description,
-                isUserTurn: docStep.isUserTurn,
-                totalFields: docStep.step.fieldsCount,
-              ),
+              endChild: GetBuilder<DocumentStepController>(
+                  tag: docStep.id,
+                  builder: (context) {
+                    return _RightChild(
+                      disabled: i > currentIndex,
+                      title: docStep.step.title,
+                      stepData: docStep,
+                      message: docStep.step.description,
+                      isUserTurn: docStep.isUserTurn,
+                      totalFields: docStep.step.fieldsCount,
+                    );
+                  }),
               beforeLineStyle: LineStyle(
                 color: i <= currentIndex
-                    ? Color(0xFF27AA69)
+                    ? const Color(0xFF27AA69)
                     : currentIndex == i
-                        ? Color(0xFF2B619C)
-                        : Color(0xFFDADADA),
+                        ? const Color(0xFF2B619C)
+                        : const Color(0xFFDADADA),
               ),
               afterLineStyle: LineStyle(
-                color: i < currentIndex ? Color(0xFF27AA69) : Color(0xFFDADADA),
+                color: i < currentIndex
+                    ? const Color(0xFF27AA69)
+                    : const Color(0xFFDADADA),
               ),
             );
           }),
@@ -108,6 +116,7 @@ class _RightChild extends StatelessWidget {
     Key? key,
     required this.title,
     required this.message,
+    required this.stepData,
     this.isUserTurn = false,
     this.disabled = false,
     this.totalFields = 0,
@@ -118,6 +127,7 @@ class _RightChild extends StatelessWidget {
   final bool disabled;
   final bool isUserTurn;
   final int totalFields;
+  final DocumentStep stepData;
 
   @override
   Widget build(BuildContext context) {
@@ -166,22 +176,35 @@ class _RightChild extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Chip(
-                    backgroundColor: AppColors.mainColor,
-                    labelStyle: const TextStyle(color: Colors.white),
-                    label: Text(
-                      isUserTurn ? 'Submit' : 'View Data',
-                      style: TextStyle(fontSize: 10),
-                    ),
-                    padding: const EdgeInsets.all(0)),
-                Chip(
-                    backgroundColor: AppColors.mainColor,
-                    labelStyle: const TextStyle(color: Colors.white),
-                    label: Text(
-                      'View History',
-                      style: TextStyle(fontSize: 10),
-                    ),
-                    padding: const EdgeInsets.all(0)),
+                GestureDetector(
+                  onTap: () async {
+                    final controller =
+                        Get.find<DocumentStepController>(tag: stepData.id);
+                    await controller.getAllFields();
+                    Get.to(() => StepFieldScreen(step: stepData));
+                  },
+                  child: Chip(
+                      backgroundColor: AppColors.mainColor,
+                      labelStyle: const TextStyle(color: Colors.white),
+                      label: Text(
+                        isUserTurn ? 'Submit' : 'View Data',
+                        style: const TextStyle(fontSize: 10),
+                      ),
+                      padding: const EdgeInsets.all(0)),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => StepsEventScreen(events: stepData.events));
+                  },
+                  child: const Chip(
+                      backgroundColor: AppColors.mainColor,
+                      labelStyle: TextStyle(color: Colors.white),
+                      label: Text(
+                        'View History',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                      padding: EdgeInsets.all(0)),
+                ),
               ],
             )
         ],
@@ -191,9 +214,11 @@ class _RightChild extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
+  final Document doc;
+  const _Header({required this.doc});
   @override
   Widget build(BuildContext context) {
-    final document = Get.arguments['document'];
+    final document = doc;
     return Container(
       decoration: const BoxDecoration(
         color: Color(0xFFF9F9F9),
@@ -243,7 +268,7 @@ class _Header extends StatelessWidget {
                   Text(
                     '#${document.id}',
                     style: const TextStyle(
-                      color: const Color(0xFF636564),
+                      color: Color(0xFF636564),
                       fontSize: 16,
                     ),
                   ),

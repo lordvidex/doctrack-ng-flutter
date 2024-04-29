@@ -13,7 +13,8 @@ Widget boldText(
   return Text(
     text,
     textAlign: textAlign,
-    overflow: overflow,
+    overflow: overflow ?? TextOverflow.ellipsis,
+    maxLines: 2,
     style: TextStyle(
       color: textColor,
       fontWeight: fontWeight,

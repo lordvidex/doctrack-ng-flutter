@@ -1,8 +1,6 @@
-import 'package:final_year/features/controllers/workflow.dart';
 import 'package:final_year/features/route/route.dart';
 import 'package:final_year/utils/constants/colors.dart';
 import 'package:final_year/utils/widgets/custom_appbar.dart';
-import 'package:final_year/utils/widgets/custom_search.dart';
 import 'package:final_year/utils/widgets/docs_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,7 +51,7 @@ class _DocumentsScreenState extends State<DocumentsScreen> {
                               icon: CircularPercentIndicator(
                                 radius: 20.w,
                                 percent: p,
-                                center: new Text('${(p * 100).round()}%'),
+                                center: Text('${(p * 100).round()}%'),
                                 progressColor: AppColors.mainColor,
                               ),
                               onTap: () {

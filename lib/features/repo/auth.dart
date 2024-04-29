@@ -18,6 +18,7 @@ class AuthRepo extends GetxService {
   @override
   void onInit() {
     super.onInit();
+    tryLogin();
     _timer ??= Timer.periodic(const Duration(minutes: 30), (_) => tryLogin());
   }
 
@@ -37,7 +38,11 @@ class AuthRepo extends GetxService {
   Future<Response> login(LoginModel body) async {
     sharedPreferences.setString('email', body.email);
     sharedPreferences.setString('password', body.password);
-    return await apiClient.postData(UrlConstants.LOGIN_ENDPOINT, body.toJson());
+    final response =
+        await apiClient.postData(UrlConstants.LOGIN_ENDPOINT, body.toJson());
+    await saveUserToken(
+        response.body['token'], User.fromMap(response.body['user']));
+    return response;
   }
 
   Future<Response> verifyToken(String accessToken) async {
@@ -51,7 +56,13 @@ class AuthRepo extends GetxService {
     apiClient.updateToken(token);
     if (user.id.isNotEmpty) {
       log('logged in to one signal, id: ${user.id}');
-      await OneSignal.login(user.id);
+      OneSignal.User.pushSubscription.addObserver((stateChanges) {
+        log('current user state : ${stateChanges.current.jsonRepresentation()}');
+      });
+      await OneSignal.logout();
+      await OneSignal.Notifications.requestPermission(true);
+      await OneSignal.login('doctrack_user${user.id}');
+      await OneSignal.User.pushSubscription.optIn();
     }
     if (user.email.isNotEmpty) {
       OneSignal.User.addEmail(user.email)

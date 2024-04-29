@@ -21,8 +21,8 @@ class UploadDocuments extends GetView<UploadDocumentsController> {
           child: Column(
             children: [
               uploadDocContainer(mainText: 'NIN', onTap: () => controller.pickFile(),),
-              uploadDocContainer(mainText: 'International Passport', onTap: () => null),
-              uploadDocContainer(mainText: 'Birth Certificate', onTap: () => null),
+              uploadDocContainer(mainText: 'International Passport', onTap: () {}),
+              uploadDocContainer(mainText: 'Birth Certificate', onTap: () {}),
               customButton(text: 'Continue', onTap: (){
                 Get.toNamed(AppRoute.signature);
               })

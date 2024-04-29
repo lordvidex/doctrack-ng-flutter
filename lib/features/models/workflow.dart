@@ -33,9 +33,9 @@ class Workflow {
       updatedBy = json['updatedBy'];
       if (json['steps'] != null) {
         steps = <WorkflowStep>[];
-        (json['steps'] as List).forEach((e) {
+        for (var e in (json['steps'] as List)) {
           steps.add(WorkflowStep.fromMap(e));
-        });
+        }
       }
     }
   }
@@ -49,9 +49,9 @@ class Flows {
     {
       if (json['workflows'] != null) {
         workFlows = <Workflow>[];
-        (json['workflows'] as List).forEach((e) {
+        for (var e in (json['workflows'] as List)) {
           workFlows.add(Workflow.fromMap(e));
-        });
+        }
       }
     }
   }

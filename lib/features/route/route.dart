@@ -1,9 +1,7 @@
 import 'package:final_year/features/screens/application_created.dart';
 import 'package:final_year/features/screens/create_national_profile.dart';
-import 'package:final_year/features/screens/field_screen.dart';
 import 'package:final_year/features/screens/workflow_steps_screen.dart';
 import 'package:final_year/features/screens/login.dart';
-import 'package:final_year/features/screens/national_profile.dart';
 import 'package:final_year/features/screens/profile.dart';
 import 'package:final_year/features/screens/sign_up.dart';
 import 'package:final_year/features/screens/signature.dart';
@@ -27,6 +25,7 @@ class AppRoute {
   static const String flowSteps = '/flowsteps';
   static const String fieldView = '/field';
   static const String documentSetStepField = '/setStepField';
+  static const String documentStepEvents = '/stepEvents';
   static const String singleWorkflow = '/singleWorkflow';
   static const String home = '/';
   static const String viewDocumentDetails = '/documentDetails';
@@ -86,12 +85,6 @@ class AppRoute {
     GetPage(
       name: fieldView,
       page: () => const FieldViewScreen(),
-       curve: Curves.easeInOut,
-      transition: Transition.fadeIn,
-    ),
-    GetPage(
-      name: documentSetStepField,
-      page: () => const FieldScreen(),
       curve: Curves.easeInOut,
       transition: Transition.fadeIn,
     ),

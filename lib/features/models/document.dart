@@ -127,7 +127,7 @@ class DocumentEvent {
 
 class DocumentField {
   WorkflowField field;
-  FieldData data;
+  FieldData? data;
   DocumentField({
     required this.field,
     required this.data,
@@ -136,14 +136,14 @@ class DocumentField {
   Map<String, dynamic> toMap() {
     return {
       'field': field.toMap(),
-      'data': data.toMap(),
+      'data': data?.toMap(),
     };
   }
 
   factory DocumentField.fromMap(Map<String, dynamic> map) {
     return DocumentField(
       field: WorkflowField.fromMap(map['field']),
-      data: FieldData.fromMap(map['data']),
+      data: map['data'] != null ? FieldData.fromMap(map['data']) : null,
     );
   }
 
@@ -151,6 +151,25 @@ class DocumentField {
 
   factory DocumentField.fromJson(String source) =>
       DocumentField.fromMap(json.decode(source));
+}
+
+class UploadFieldModel {
+  String fieldId;
+  FieldData data;
+  UploadFieldModel({
+    required this.fieldId,
+    required this.data,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'fieldId': fieldId,
+      'data': data.toMap(),
+    };
+  }
+
+  @override
+  String toString() => 'UploadFieldModel(fieldId: $fieldId, data: $data)';
 }
 
 class FieldData {
@@ -189,6 +208,11 @@ class FieldData {
 
   factory FieldData.fromJson(String source) =>
       FieldData.fromMap(json.decode(source));
+
+  @override
+  String toString() {
+    return 'FieldData(boolean: $boolean, text: $text, time: $time, file: $file)';
+  }
 }
 
 class FieldFile {

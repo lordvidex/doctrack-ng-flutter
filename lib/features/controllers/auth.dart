@@ -45,9 +45,6 @@ class AuthController extends GetxController {
     ResponseModel responseModel;
     Response response = await authRepo.login(loginBody);
     if (response.statusCode == 200) {
-      //save user token
-      await authRepo.saveUserToken(
-          response.body['token'], User.fromMap(response.body['user']));
       responseModel = ResponseModel(isSuccess: true, message: 'Login Success');
       isLoading = false;
       update();

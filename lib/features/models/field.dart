@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 class FieldModel {
   List<WorkflowField>? fieldslist;
 
@@ -15,7 +17,7 @@ class FieldModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (fieldslist != null) {
       data['fields'] = fieldslist!.map((v) => v.toMap()).toList();
     }
@@ -65,4 +67,16 @@ class WorkflowField {
 
   factory WorkflowField.fromJson(String source) =>
       WorkflowField.fromMap(json.decode(source));
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is WorkflowField && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode;
+  }
 }

@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:final_year/features/api/apiClient.dart';
 import 'package:final_year/features/controllers/auth.dart';
 import 'package:final_year/features/controllers/document.dart';
-import 'package:final_year/features/controllers/field.dart';
 import 'package:final_year/features/controllers/profile.dart';
 import 'package:final_year/features/controllers/upload_docs.dart';
 import 'package:final_year/features/controllers/workflow.dart';
@@ -16,17 +15,17 @@ const appID = "ae200f01-781d-44ca-8c34-8f4913b65e56";
 
 Future<void> initDep() async {
   //TODO: Remove this method to stop OneSignal Debugging
-  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize(appID);
-  OneSignal.Notifications.requestPermission(true);
+  await OneSignal.Notifications.requestPermission(true);
   final sharedPreferences = await SharedPreferences.getInstance();
   Get.lazyPut(() => Dio(BaseOptions(
       baseUrl: UrlConstants.BASEURL,
       headers: {'Content-Type': 'application/json'})));
-  Get.lazyPut(() => sharedPreferences);
+  Get.lazyPut(() => sharedPreferences, fenix: true);
   Get.lazyPut(
       () => ApiClient(appbaseUrl: UrlConstants.BASEURL, dio: Get.find()));
-  Get.lazyPut(() => AuthController(authRepo: Get.find()));
+  Get.lazyPut(() => AuthController(authRepo: Get.find()), fenix: true);
   Get.lazyPut(() =>
       AuthRepo(apiClient: Get.find(), sharedPreferences: sharedPreferences));
   Get.lazyPut(() => ProfileController(), fenix: true);
@@ -34,13 +33,9 @@ Future<void> initDep() async {
       () => UploadDocumentsController(
           apiClient: Get.find(), sharedPreferences: sharedPreferences),
       fenix: true);
-  Get.lazyPut(() => WorkflowController(
-      apiClient: Get.find(), sharedPreferences: sharedPreferences));
-  Get.lazyPut(() => DocumentController(apiClient: Get.find()), fenix: true);
   Get.lazyPut(
-      () => FieldController(
-          workflowController: Get.find(),
-          apiClient: Get.find(),
-          sharedPreferences: sharedPreferences),
+      () => WorkflowController(
+          apiClient: Get.find(), sharedPreferences: sharedPreferences),
       fenix: true);
+  Get.lazyPut(() => DocumentController(apiClient: Get.find()), fenix: true);
 }

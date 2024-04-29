@@ -1,11 +1,9 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:final_year/features/route/route.dart';
 import 'package:final_year/utils/constants/colors.dart';
 import 'package:final_year/utils/widgets/button.dart';
 import 'package:final_year/utils/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 Widget uploadDocContainer(
     {required String mainText, required VoidCallback onTap}) {
@@ -58,7 +56,6 @@ Widget nationalDocContainer(
     child: Container(
       margin: EdgeInsets.only(top: 10.h),
       padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 15.h),
-      height: 80.h,
       alignment: Alignment.bottomLeft,
       width: double.infinity,
       decoration: BoxDecoration(

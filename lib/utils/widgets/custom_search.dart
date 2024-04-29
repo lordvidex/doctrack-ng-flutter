@@ -22,7 +22,7 @@ Widget customSearch({
               decoration: InputDecoration(
                 isDense: true,
                 
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 hintText: 'Search for documents',
                 hintStyle: TextStyle(
                   color: AppColors.greyColor,
